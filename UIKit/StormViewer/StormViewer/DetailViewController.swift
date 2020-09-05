@@ -18,6 +18,7 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         makeTitle()
         loadImage()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(buttonTapped))
     }
     
     private func loadImage() {
@@ -40,6 +41,13 @@ class DetailViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.hidesBarsOnTap = false
+    }
+    
+    @objc func buttonTapped() {
+        guard let image = imageView.image?.jpegData(compressionQuality: 0.8) else {return}
+        let ac = UIActivityViewController(activityItems: [image, selectedImage!], applicationActivities: nil)
+        ac.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        present(ac, animated: true)
     }
 }
 

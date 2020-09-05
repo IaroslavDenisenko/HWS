@@ -17,6 +17,15 @@ class ViewController: UITableViewController {
         title = "Storm Viewer"
         navigationController?.navigationBar.prefersLargeTitles = true
         loadPictures()
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "recommend the app", style: .done, target: self, action: #selector(recommendButtonTapped))
+        
+    }
+    
+    @objc func recommendButtonTapped() {
+        let message = "Hello, my dear friend! I recommend you to install this amazing app:)"
+        let ac = UIActivityViewController(activityItems: [message], applicationActivities: nil)
+        ac.popoverPresentationController?.barButtonItem = navigationItem.leftBarButtonItem
+        present(ac, animated: true)
     }
     
     private func loadPictures() {

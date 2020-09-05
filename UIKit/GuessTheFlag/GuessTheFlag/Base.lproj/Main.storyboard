@@ -50,9 +50,6 @@
                     </view>
                     <navigationItem key="navigationItem" id="piD-C0-Xvl"/>
                     <connections>
-                        <outlet property="button1" destination="9JQ-Mf-WaV" id="uj0-NV-mit"/>
-                        <outlet property="button2" destination="fBD-yk-a6Q" id="hgD-Xw-S8q"/>
-                        <outlet property="button3" destination="ghZ-54-h5K" id="oj4-e5-A5i"/>
                         <outletCollection property="buttons" destination="9JQ-Mf-WaV" collectionClass="NSMutableArray" id="OAT-ps-arz"/>
                         <outletCollection property="buttons" destination="fBD-yk-a6Q" collectionClass="NSMutableArray" id="Jte-1c-rwz"/>
                         <outletCollection property="buttons" destination="ghZ-54-h5K" collectionClass="NSMutableArray" id="tpp-Rr-tTl"/>
