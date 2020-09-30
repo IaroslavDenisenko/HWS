@@ -17,6 +17,9 @@
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9JQ-Mf-WaV">
                                 <rect key="frame" x="87.5" y="100" width="200" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="9JQ-Mf-WaV" secondAttribute="height" multiplier="2:1" id="KvH-5j-RsJ"/>
+                                </constraints>
                                 <state key="normal" image="us"/>
                                 <connections>
                                     <action selector="buttonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="LsE-lN-MFc"/>
@@ -24,6 +27,10 @@
                             </button>
                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fBD-yk-a6Q">
                                 <rect key="frame" x="87.5" y="230" width="200" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="fBD-yk-a6Q" secondAttribute="height" multiplier="2:1" id="2Ju-it-0yr"/>
+                                    <constraint firstAttribute="height" constant="100" id="n7E-Yv-j54"/>
+                                </constraints>
                                 <state key="normal" image="us"/>
                                 <connections>
                                     <action selector="buttonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="IC4-51-UjA"/>
@@ -31,6 +38,9 @@
                             </button>
                             <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ghZ-54-h5K">
                                 <rect key="frame" x="87.5" y="360" width="200" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="ghZ-54-h5K" secondAttribute="height" multiplier="2:1" id="o3A-YX-Z59"/>
+                                </constraints>
                                 <state key="normal" image="us"/>
                                 <connections>
                                     <action selector="buttonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kIP-Dz-dy5"/>
@@ -39,12 +49,15 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="fBD-yk-a6Q" firstAttribute="height" secondItem="9JQ-Mf-WaV" secondAttribute="height" id="6WG-bv-BpB"/>
                             <constraint firstItem="ghZ-54-h5K" firstAttribute="top" secondItem="fBD-yk-a6Q" secondAttribute="bottom" constant="30" id="AtK-2i-CEu"/>
                             <constraint firstItem="fBD-yk-a6Q" firstAttribute="centerX" secondItem="9JQ-Mf-WaV" secondAttribute="centerX" id="CQz-Bs-VDJ"/>
                             <constraint firstItem="fBD-yk-a6Q" firstAttribute="top" secondItem="9JQ-Mf-WaV" secondAttribute="bottom" constant="30" id="Tgy-sN-9CC"/>
                             <constraint firstItem="ghZ-54-h5K" firstAttribute="centerX" secondItem="fBD-yk-a6Q" secondAttribute="centerX" id="ljD-Be-c6r"/>
                             <constraint firstItem="9JQ-Mf-WaV" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="mqL-Bb-typ"/>
+                            <constraint firstItem="ghZ-54-h5K" firstAttribute="height" secondItem="fBD-yk-a6Q" secondAttribute="height" id="n27-C2-UTK"/>
                             <constraint firstItem="9JQ-Mf-WaV" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="56" id="qTK-no-tOf"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="ghZ-54-h5K" secondAttribute="bottom" constant="20" id="rrC-Ld-mbl"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
