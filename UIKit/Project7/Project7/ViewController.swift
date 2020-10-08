@@ -11,7 +11,8 @@ import UIKit
 class ViewController: UITableViewController {
     
     var petitions = [Petition]()
-    var initialPetitions: [Petition]!
+    var initialPetitions = [Petition]()
+    var isDataLoaded = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,7 +24,7 @@ class ViewController: UITableViewController {
     func setupBarButtons() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Credits", style: .plain, target: self, action: #selector(creditsButtonTapped))
         let filterSwitchON = UIBarButtonItem(image: UIImage(systemName: "line.horizontal.3.decrease.circle"), style: .plain, target: self, action: #selector(filterButtonTapped))
-        let filterSwitchOFF = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(filterSwitchOffTapped))
+        let filterSwitchOFF = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(updatePetitions))
         navigationItem.leftBarButtonItems = [filterSwitchOFF, filterSwitchON]
     }
     
@@ -40,22 +41,29 @@ class ViewController: UITableViewController {
         ac.addTextField()
         let action = UIAlertAction(title: "Filter", style: .default) { [weak self, weak ac] _ in
             if let text = ac?.textFields?.first?.text {
-                for petition in initialPetitions {
-                    if petition.title.lowercased().contains(text.lowercased()) {
-                        filteredPetitions.append(petition)
+                DispatchQueue.global(qos: .userInteractive).async {
+                    for petition in initialPetitions {
+                        if petition.title.lowercased().contains(text.lowercased()) {
+                            filteredPetitions.append(petition)
+                        }
+                    }
+                    self?.petitions = filteredPetitions
+                    DispatchQueue.main.async {
+                        self?.tableView.reloadData()
                     }
                 }
-                self?.petitions = filteredPetitions
-                self?.tableView.reloadData()
             }
         }
         ac.addAction(action)
         present(ac, animated: true)
     }
     
-    @objc func filterSwitchOffTapped() {
-        petitions = initialPetitions
-        tableView.reloadData()
+    @objc func updatePetitions() {
+        loadData()
+        if !isDataLoaded {
+            petitions = initialPetitions
+            tableView.reloadData()
+        }
     }
     
     func loadData() {
@@ -65,13 +73,15 @@ class ViewController: UITableViewController {
         } else {
             stringURL = "https://api.whitehouse.gov/v1/petitions.json?signatureCountFloor=10000&limit=100"
         }
-        if let url = URL(string: stringURL) {
-            if let data = try? Data(contentsOf: url) {
-                parse(json: data)
-                return
+        DispatchQueue.global(qos: .userInteractive).async {
+            if let url = URL(string: stringURL) {
+                if let data = try? Data(contentsOf: url) {
+                    self.parse(json: data)
+                    return
+                }
             }
+            self.performSelector(onMainThread: #selector(self.showError), with: nil, waitUntilDone: false)
         }
-        showError()
     }
     
     func parse(json: Data) {
@@ -79,11 +89,15 @@ class ViewController: UITableViewController {
         if let jsonPetitions = try? decoder.decode(Petitions.self, from: json) {
             petitions = jsonPetitions.results
             initialPetitions = petitions
-            tableView.reloadData()
+            isDataLoaded = true
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
     
-    func showError() {
+    @objc func showError() {
+        isDataLoaded = false
         let ac = UIAlertController(title: "Loading error", message: "There was a problem loading the feed; please check your connection and try again.", preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "OK", style: .default))
         present(ac, animated: true)

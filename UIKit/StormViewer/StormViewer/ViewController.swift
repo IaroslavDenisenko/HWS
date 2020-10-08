@@ -16,7 +16,7 @@ class ViewController: UITableViewController {
         super.viewDidLoad()
         title = "Storm Viewer"
         navigationController?.navigationBar.prefersLargeTitles = true
-        loadPictures()
+        performSelector(inBackground: #selector(loadPictures), with: nil)
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "recommend the app", style: .done, target: self, action: #selector(recommendButtonTapped))
         
     }
@@ -28,7 +28,7 @@ class ViewController: UITableViewController {
         present(ac, animated: true)
     }
     
-    private func loadPictures() {
+    @objc func loadPictures() {
         let fm = FileManager.default
         let path = Bundle.main.resourcePath!
         let pictures = try! fm.contentsOfDirectory(atPath: path)
@@ -38,6 +38,9 @@ class ViewController: UITableViewController {
             }
         }
         self.pictures.sort()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
