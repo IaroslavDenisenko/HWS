@@ -15,6 +15,7 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadPeople()
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(selectPicture))
     }
     
@@ -26,6 +27,17 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
             picker.sourceType = .camera
         }
         present(picker, animated: true)
+    }
+    
+    func loadPeople() {
+        if let decodePeople = UserDefaults.standard.object(forKey: "people") as? Data {
+            let decoder = JSONDecoder()
+            do {
+                people = try decoder.decode([Person].self, from: decodePeople)
+            } catch {
+                print("Failed to load people")
+            }
+        }
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -66,6 +78,7 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
             if let text = ac.textFields?[0].text {
                 person.name = text
                 self.collectionView.reloadData()
+                self.save()
             }
         })))
         present(ac, animated: true)
@@ -74,6 +87,15 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
     func deleteItem(action: UIAlertAction!) {
         people.remove(at: index)
         collectionView.reloadData()
+    }
+    
+    func save() {
+        let encoder = JSONEncoder()
+        if let savedData = try? encoder.encode(people) {
+            UserDefaults.standard.set(savedData, forKey: "people")
+        } else {
+            print("Failed to save people")
+        }
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -85,6 +107,7 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         }
         let person = Person(name: "Unknown", image: imageName)
         people.append(person)
+        save()
         collectionView.reloadData()
         dismiss(animated: true)
     }
