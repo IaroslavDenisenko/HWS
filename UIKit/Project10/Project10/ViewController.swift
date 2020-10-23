@@ -15,6 +15,7 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadPeople()
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(selectPicture))
     }
     
@@ -26,6 +27,14 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
             picker.sourceType = .camera
         }
         present(picker, animated: true)
+    }
+    
+    func loadPeople() {
+        if let savedData = UserDefaults.standard.object(forKey: "people") as? Data {
+            if let decodePeople = try?  NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(savedData) as? [Person] {
+                people = decodePeople
+            }
+        }
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -66,6 +75,7 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
             if let text = ac.textFields?[0].text {
                 person.name = text
                 self.collectionView.reloadData()
+                self.save()
             }
         })))
         present(ac, animated: true)
@@ -74,6 +84,12 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
     func deleteItem(action: UIAlertAction!) {
         people.remove(at: index)
         collectionView.reloadData()
+    }
+    
+    func save() {
+        if let savedData = try? NSKeyedArchiver.archivedData(withRootObject: people, requiringSecureCoding: false) {
+            UserDefaults.standard.set(savedData, forKey: "people")
+        }
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -86,6 +102,7 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         let person = Person(name: "Unknown", image: imageName)
         people.append(person)
         collectionView.reloadData()
+        save()
         dismiss(animated: true)
     }
     
