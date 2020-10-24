@@ -9,7 +9,7 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
     @IBOutlet var buttons: [UIButton]!
     
     var countries = [
@@ -18,10 +18,16 @@ class ViewController: UIViewController {
     var score = 0
     var correctAnswer = 0
     var questionsCount = 0
+    var highScore = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         askQuestion()
+        loadHighScore()
+    }
+    
+    func loadHighScore() {
+        highScore = UserDefaults.standard.integer(forKey: "highScore")
     }
     
     private func askQuestion(action: UIAlertAction! = nil) {
@@ -32,12 +38,7 @@ class ViewController: UIViewController {
             buttons[i].layer.borderColor = UIColor.lightGray.cgColor
         }
         correctAnswer = Int.random(in: 0...2)
-        if questionsCount < 10
-        {
-            title = "Country: \(countries[correctAnswer].uppercased()) Your score:\(score)/\(questionsCount)"
-        } else {
-            title = "GAME OVER! Your score:\(score)/\(questionsCount)"
-        }
+        title = "Country: \(countries[correctAnswer].uppercased()) Your score:\(score)/\(questionsCount)"
     }
     
     private func checkTheAnswer(buttonTag: Int) -> String {
@@ -53,45 +54,59 @@ class ViewController: UIViewController {
                 score -= 1
             }
         }
-        
         return alertTitle
     }
     
-    private func presentAlert(with title: String, message: String!) {
-        
-        let actionTitle: String
-        let handler: ((UIAlertAction) -> Void)?
-        
-        switch questionsCount {
-        case 0...9:
-            handler = askQuestion(action:)
-            actionTitle = "Continue"
-        default:
-            actionTitle = "Finish"
-            handler = nil
-        }
-        
+    private func presentAlert(with title: String, message: String!, actionTitle: String, handler: ((UIAlertAction) -> Void)?) {
         let ac = UIAlertController.init(title: title, message: message, preferredStyle: .alert)
         ac.addAction(UIAlertAction.init(title: actionTitle, style: .default, handler: handler))
         present(ac, animated: true)
     }
-
+    
     @IBAction func buttonTapped(_ sender: UIButton) {
+        guard questionsCount < 10 else { return }
         
-        switch questionsCount {
-        case 0...9:
-            let message: String
-            let alertTitle = checkTheAnswer(buttonTag: sender.tag)
-            if alertTitle == "Wrong" {
-                message = "That’s the flag of \(countries[sender.tag].uppercased())"
-            } else {
-                message = "Your score is \(score)"
-            }
-            presentAlert(with: alertTitle, message: message)
-        default:
-            presentAlert(with: "GAME OVER", message: nil)
-        }
         questionsCount += 1
+        let message: String
+        let alertTitle: String
+        let actionTitle: String
+        let handler: ((UIAlertAction) -> Void)?
+        
+        alertTitle = checkTheAnswer(buttonTag: sender.tag)
+        if alertTitle == "Wrong" {
+            message = "That’s the flag of \(countries[sender.tag].uppercased())"
+        } else {
+            message = "Your score is \(score)"
+        }
+        switch questionsCount {
+        case 1...9:
+            handler = askQuestion(action:)
+            actionTitle = "Continue"
+        default:
+            self.title = "GAME OVER! Your score:\(score)/\(questionsCount)"
+            actionTitle = "Finish"
+            handler = highScoreCheck
+        }
+        presentAlert(with: alertTitle, message: message, actionTitle: actionTitle, handler: handler)
+    }
+    
+    func restartGame(action: UIAlertAction! = nil) {
+        correctAnswer = 0
+        questionsCount = 0
+        score = 0
+        askQuestion()
+    }
+    
+    func highScoreCheck(action: UIAlertAction! = nil) {
+        var message: String!
+        var title = "GAME OVER"
+        if self.score > self.highScore {
+            title = "Congratulations!"
+            message = "You have broken the previous record: \(self.highScore)"
+            self.highScore = self.score
+            UserDefaults.standard.set(self.highScore, forKey: "highScore")
+        }
+        self.presentAlert(with: title, message: message, actionTitle: "Restart", handler: restartGame)
     }
 }
 
