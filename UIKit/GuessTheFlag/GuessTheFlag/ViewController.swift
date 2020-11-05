@@ -36,6 +36,7 @@ class ViewController: UIViewController {
             buttons[i].setImage(UIImage(named: countries[i]), for: .normal)
             buttons[i].layer.borderWidth = 1.0
             buttons[i].layer.borderColor = UIColor.lightGray.cgColor
+            buttons[i].transform = .identity
         }
         correctAnswer = Int.random(in: 0...2)
         title = "Country: \(countries[correctAnswer].uppercased()) Your score:\(score)/\(questionsCount)"
@@ -71,6 +72,10 @@ class ViewController: UIViewController {
         let alertTitle: String
         let actionTitle: String
         let handler: ((UIAlertAction) -> Void)?
+        
+        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 5, options: [], animations: {
+            sender.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+        })
         
         alertTitle = checkTheAnswer(buttonTag: sender.tag)
         if alertTitle == "Wrong" {
