@@ -42,10 +42,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let image = info[.editedImage] as? UIImage else { return }
         dismiss(animated: true, completion: nil)
-        currentImage = image
-        let beginImage = CIImage(image: currentImage)
-        currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
-        applyProcessing()
+        self.currentImage = image
+        let beginImage = CIImage(image: self.currentImage)
+        self.currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
+        UIView.animate(withDuration: 1, delay: 0, options: [], animations: {
+            self.imageView.alpha = 0
+        }) { finished in
+            self.applyProcessing()
+            UIView.animate(withDuration: 1, delay: 0, options: [], animations: {
+            self.imageView.alpha = 1
+            })
+        }
     }
     
     @IBAction func intensityChanged(_ sender: UISlider) {
