@@ -106,7 +106,7 @@ class ViewController: UIViewController {
     func setupControlButtons() {
         submitButton = UIButton(type: .system)
         submitButton.setTitle("SUBMIT", for: .normal)
-        submitButton.addTarget(self, action: #selector(submiTapped(_:)), for: .touchUpInside)
+        submitButton.addTarget(self, action: #selector(submitTapped(_:)), for: .touchUpInside)
         submitButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(submitButton)
         NSLayoutConstraint.activate([
@@ -191,7 +191,7 @@ class ViewController: UIViewController {
         }
     }
     
-    @objc func submiTapped(_ sender: UIButton) {
+    @objc func submitTapped(_ sender: UIButton) {
         guard let answerText = currentAnswer.text else { return }
         guard let solutionPositon = solutions.firstIndex(of: answerText) else {
             if score > 0 {
@@ -233,14 +233,20 @@ class ViewController: UIViewController {
         loadLevel()
         
         for button in letterButtons {
-            button.isHidden = false
+            UIView.animate(withDuration: 0.3, delay: 0, options: [], animations: {
+                button.alpha = 1
+            })
+//            button.isHidden = false
         }
     }
     
     @objc func clearTapped(_ sender: UIButton) {
         currentAnswer.text = ""
         for button in activatedButtons {
-            button.isHidden = false
+            UIView.animate(withDuration: 0.3, delay: 0, options: [], animations: {
+                button.alpha = 1
+            })
+//            button.isHidden = false
         }
         activatedButtons.removeAll()
     }
@@ -249,7 +255,10 @@ class ViewController: UIViewController {
         guard let buttonTitle = sender.titleLabel?.text else { return }
         currentAnswer.text = currentAnswer.text?.appending(buttonTitle)
         activatedButtons.append(sender)
-        sender.isHidden = true
+        UIView.animate(withDuration: 0.3, delay: 0, options: [], animations: {
+            sender.alpha = 0
+        })
+//        sender.isHidden = true
     }
 }
 
