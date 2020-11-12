@@ -1,0 +1,16 @@
+PODS:
+  - SVGParser (0.2.1)
+
+DEPENDENCIES:
+  - SVGParser
+
+SPEC REPOS:
+  trunk:
+    - SVGParser
+
+SPEC CHECKSUMS:
+  SVGParser: 5649edaeb2dd79489a1752aa344cbc7375470769
+
+PODFILE CHECKSUM: acd16415bc69df4c02c61f6da62dbf9ca9415b4a
+
+COCOAPODS: 1.10.0
