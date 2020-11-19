@@ -22,6 +22,7 @@ class DetailViewController: UIViewController {
     }
     
     private func loadImage() {
+        assert(selectedImage != nil, "Ooops! selectedImage is nil")
         if let image = selectedImage {
             imageView.image = UIImage(named: image)
         }
