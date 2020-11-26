@@ -7,10 +7,12 @@
 //
 
 import UIKit
+import UserNotifications
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    var isGrantedPermission = false
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -40,14 +42,43 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneWillEnterForeground(_ scene: UIScene) {
         // Called as the scene transitions from the background to the foreground.
         // Use this method to undo the changes made on entering the background.
+        registerNotification()
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
+        if isGrantedPermission {
+            scheduleNotification()
+        }
     }
 
+    func registerNotification() {
+        let center = UNUserNotificationCenter.current()
+        center.removeAllPendingNotificationRequests()
+        center.requestAuthorization(options: [.alert, .badge, .sound]) { [weak self] (granted, error) in
+            if granted {
+                self?.isGrantedPermission = true
+                print("user permission granted")
+            }
+        }
+    }
+    
+    func scheduleNotification() {
+        
+        let triger = UNTimeIntervalNotificationTrigger(timeInterval: 86400, repeats: true)
+        
+        let content = UNMutableNotificationContent()
+        content.title = "Guess the Flag"
+        content.body = "Hey! Come back and play in game Guess the Flag!"
+        content.categoryIdentifier = "alert"
+        content.sound = .default
+        
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: triger)
+        
+        UNUserNotificationCenter.current().add(request)
+    }
 
 }
 
