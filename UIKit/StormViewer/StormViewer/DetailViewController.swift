@@ -44,8 +44,28 @@ class DetailViewController: UIViewController {
         navigationController?.hidesBarsOnTap = false
     }
     
+    func setupSharedImage() -> Data? {
+        guard let image = imageView.image else { return nil }
+        let renderer = UIGraphicsImageRenderer(size: image.size)
+        
+        let renderedImage = renderer.image { [unowned image] (ctx) in
+            image.draw(at: CGPoint.zero)
+//            let paragraphStyle = NSMutableParagraphStyle()
+//            paragraphStyle.alignment = .center
+            
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 36)
+            ]
+            
+            let string = "From Storm Viewer"
+            let attributedString = NSAttributedString(string: string, attributes: attributes)
+            attributedString.draw(at: CGPoint(x: 5, y: 5))
+        }
+        return renderedImage.jpegData(compressionQuality: 0.8)
+    }
+    
     @objc func buttonTapped() {
-        guard let image = imageView.image?.jpegData(compressionQuality: 0.8) else {return}
+        guard let image = setupSharedImage() else {return}
         let ac = UIActivityViewController(activityItems: [image, selectedImage!], applicationActivities: nil)
         ac.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         present(ac, animated: true)
