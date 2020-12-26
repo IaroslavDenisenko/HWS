@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Project27" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QzI-yb-KOY">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mh7-mb-HFw">
+                                <rect key="frame" x="161.5" y="617" width="52" height="30"/>
+                                <state key="normal" title="Redraw"/>
+                                <connections>
+                                    <action selector="redrawButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="sFr-rc-Nxi"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="QzI-yb-KOY" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="EGI-7F-pGq"/>
+                            <constraint firstAttribute="trailing" secondItem="QzI-yb-KOY" secondAttribute="trailing" id="UVl-MI-DMW"/>
+                            <constraint firstItem="QzI-yb-KOY" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="YTd-O9-reb"/>
+                            <constraint firstItem="mh7-mb-HFw" firstAttribute="centerX" secondItem="QzI-yb-KOY" secondAttribute="centerX" id="aOd-NC-byi"/>
+                            <constraint firstItem="QzI-yb-KOY" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="fyn-MA-gka"/>
+                            <constraint firstItem="mh7-mb-HFw" firstAttribute="bottom" secondItem="QzI-yb-KOY" secondAttribute="bottom" constant="-20" id="qKP-jV-Pz5"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="QzI-yb-KOY" id="vlf-PR-icg"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="128.80000000000001" y="137.18140929535232"/>
+        </scene>
+    </scenes>
+</document>
