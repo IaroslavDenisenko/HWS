@@ -23,6 +23,6 @@ let dict = Dictionary(counts, uniquingKeysWith: +)
 let numbersArray = Array(1...100)
 let sum = numbersArray.reduce(0, +)
 
-let yes = ["yes", "fuck", "me"]
+let yes = ["yes", "no", "me"]
 let reply = "yes of course"
 yes.contains(where: reply.contains)
